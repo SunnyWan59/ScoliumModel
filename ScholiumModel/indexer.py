@@ -39,8 +39,6 @@ text_splitter = RecursiveCharacterTextSplitter(
 )
 
 
-
-
 class Indexer():
     def __init__(self, index_name = "scholium-index"): 
         self.embeddings = CohereEmbeddings(model="embed-english-v3.0")
@@ -54,7 +52,7 @@ class Indexer():
             self.index = self.pc.Index(index_name)
         
         self.vector_store = PineconeVectorStore(embedding=self.embeddings, index=self.index)
-        
+
     def index_document(self, file_path):
         pages = asyncio.run(_lazy_load_pdf(file_path))
         all_splits = text_splitter.split_documents(pages)

@@ -1,10 +1,10 @@
 import os
 from model import CohereModel, create_config, get_output
 from langchain_cohere import CohereEmbeddings,ChatCohere
-from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_community.document_loaders import JSONLoader
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone
+from langchain import hub
 
 pinecone_api_key = "pcsk_3wj9Yc_Z4qKuzouzoT3gRmkjMZEQE3pdiXYqfM3krLaMkbdvkiwHcqdQYYbfbVLML2XUH"
 
@@ -18,7 +18,7 @@ os.environ["COHERE_API_KEY"] = "pwYNrztZvPYTflPTWTQuLjbF27ES4kr6OMoCt3wf"
 class RAG():
     def __init__(self,index_name = "scholium-index"):
         '''
-        A class ro represent our RAG model
+        A class to represent our RAG model
         '''
         self.model  = CohereModel()
         self.embeddings = CohereEmbeddings(model="embed-english-v3.0")

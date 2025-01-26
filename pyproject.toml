@@ -1,0 +1,24 @@
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ScholiumModel"
+version = "0.1.0"
+description = "The model behind Scholium"
+authors = [
+    { name="Sunny Wan", email="Sunnywan2020@gmail.com" }
+]
+readme = "README.md"
+dependencies = [
+    "langchain-cohere",
+    "langgraph",
+    "langsmith",
+    "langchain-text-splitters",
+    "langchain-community",
+    "langchain-pinecone",
+    "jq",
+    "pinecone",
+    "pypdf"
+
+]
