@@ -1,9 +1,17 @@
+'''
+A class for storing chat history in a postgres SQL database
+Work in progress
+'''
+
 from psycopg_pool import ConnectionPool
 from langgraph.checkpoint.postgres import PostgresSaver
 
+import os 
+from dotenv import load_dotenv
 
+load_dotenv()
+DB_URI = os.environ.get("DB_URI")
 
-DB_URI = "postgresql://neondb_owner:npg_SUp1iMyYFH5h@ep-autumn-scene-a8lger8v-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
 
 class DatabaseConnection:
     def __init__(self,

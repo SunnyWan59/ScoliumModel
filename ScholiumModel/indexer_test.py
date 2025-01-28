@@ -1,4 +1,4 @@
-from indexer import Indexer, _lazy_load_pdf
+from ScholiumModel.indexer import Indexer, _lazy_load_pdf
 
 def test_indexer():
     indexer = Indexer()

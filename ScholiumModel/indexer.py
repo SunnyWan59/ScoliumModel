@@ -1,4 +1,3 @@
-import pypdf
 import os
 from langchain_cohere import CohereEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
@@ -11,8 +10,12 @@ from langchain_pinecone import PineconeVectorStore
 
 import asyncio
 
-os.environ["COHERE_API_KEY"] = "pwYNrztZvPYTflPTWTQuLjbF27ES4kr6OMoCt3wf"
-os.environ["PINECONE_API_KEY"] = "pcsk_3wj9Yc_Z4qKuzouzoT3gRmkjMZEQE3pdiXYqfM3krLaMkbdvkiwHcqdQYYbfbVLML2XUH"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 
 async def _lazy_load_pdf(file_path):

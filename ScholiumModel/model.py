@@ -2,7 +2,7 @@ import os
 
 from langchain_cohere import CohereEmbeddings, ChatCohere
 from langchain_core.tools import tool
-from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
+from langchain_core.messages import SystemMessage
 
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
@@ -12,20 +12,17 @@ from langgraph.graph import END
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.graph import MessagesState, StateGraph
 
-from langchain_postgres import PostgresChatMessageHistory
-import psycopg
 from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.checkpoint.memory import MemorySaver
 
+from dotenv import load_dotenv
 
+load_dotenv()
 
-#Another security risk
-os.environ["LANGSMITH_API_KEY"] = "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"
-os.environ["COHERE_API_KEY"] = "pwYNrztZvPYTflPTWTQuLjbF27ES4kr6OMoCt3wf"
-os.environ["PINECONE_API_KEY"] = "pcsk_3wj9Yc_Z4qKuzouzoT3gRmkjMZEQE3pdiXYqfM3krLaMkbdvkiwHcqdQYYbfbVLML2XUH"
+LANGSMITH_API_KEY = os.environ.get("LANGSMITH_API_KEY")
+COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
+DB_URI = os.environ.get("DB_URI")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
-DB_URI = "postgresql://neondb_owner:npg_SUp1iMyYFH5h@ep-autumn-scene-a8lger8v-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
-
 model = ChatCohere(model="command-r-plus")
 
 embeddings = CohereEmbeddings(model="embed-english-v3.0")
@@ -33,13 +30,6 @@ embeddings = CohereEmbeddings(model="embed-english-v3.0")
 pc = Pinecone(api_key= pinecone_api_key)
 index = pc.Index("scholium-index")
 vector_store = PineconeVectorStore(embedding=embeddings, index=index)
-
-# with ConnectionPool(
-#     conninfo=DB_URI,
-#     max_size=20,
-#     ) as pool:
-#         checkpointer = PostgresSaver(pool)
-
 
 @tool(response_format="content_and_artifact")
 def retrieve(query: str):
@@ -75,11 +65,10 @@ def generate(state: MessagesState):
 
     docs_content = "\n\n".join(doc.content for doc in tool_messages)
     system_message_content = (
-        "You are an assistant for question-answering tasks. "
+        "You are an assistant for question-answering tasks. Your job is to recommend papers fron the retrieved context."
         "Use the following pieces of retrieved context to answer "
         "the question. If you don't know the answer, say that you "
-        "don't know. Use three sentences maximum and keep the "
-        "answer concise. Also make sure to cite the context where you got the answer from."
+        "don't know. Also make sure to directly quote your sources and cite them, but do not make up sources or use sources that are not in the retrieved context."
         "\n\n"
         f"{docs_content}"
     )
@@ -107,8 +96,8 @@ def compile_graph():
     graph_builder.add_edge("tools", "generate")
     graph_builder.add_edge("generate", END)
     # checkpointer = PostgresSaver.from_conn_string(DB_URI)
-    checkpointer = MemorySaver()
-    graph = graph_builder.compile(checkpointer=checkpointer)
+    # checkpointer = MemorySaver()
+    graph = graph_builder.compile()
     return graph
 
 
@@ -130,14 +119,5 @@ def chat_in_terminal(thread: str):
         else:
             chat(thread, input_message)
 
-API_KEYS = {    
-    "LANGSMITH_API_KEY": "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",
-    "COHERE_API_KEY": "pwYNrztZvPYTflPTWTQuLjbF27ES4kr6OMoCt3wf",
-    "PINECONE_API_KEY": "pcsk_3wj9Yc_Z4qKuzouzoT3gRmkjMZEQE3pdiXYqfM3krLaMkbdvkiwHcqdQYYbfbVLML2XUH"
-}
-
 if __name__ == "__main__":
-    # chat_in_terminal("test1")
-    # connect_database()
     chat_in_terminal("test1")
-    # chat("test1", "Hello!")
