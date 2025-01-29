@@ -1,6 +1,7 @@
 import os
 
-from langchain_cohere import CohereEmbeddings, ChatCohere
+from langchain_openai import ChatOpenAI,OpenAIEmbeddings
+
 from langchain_core.tools import tool
 from langchain_core.messages import SystemMessage
 
@@ -20,12 +21,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 LANGSMITH_API_KEY = os.environ.get("LANGSMITH_API_KEY")
-COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 DB_URI = os.environ.get("DB_URI")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
-model = ChatCohere(model="command-r-plus")
+model = ChatOpenAI(
+    model="gpt-4o",
+    temperature=1,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+)
 
-embeddings = CohereEmbeddings(model="embed-english-v3.0")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 pc = Pinecone(api_key= pinecone_api_key)
 index = pc.Index("scholium-index")
