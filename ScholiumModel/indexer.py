@@ -64,11 +64,6 @@ class Indexer():
 
 if __name__ == "__main__":
     file_path = os.path.join(os.path.dirname(__file__), "DistilBERT.pdf")
-    # pages = asyncio.run(_lazy_load_pdf(file_path))
-    # print(len(pages[3].page_content))
-    # all_splits = text_splitter.split_documents(pages)
-    # splitcount = len(all_splits)
-    # print(f"Split page into {splitcount} sub-documents.")
     indexer = Indexer()
     indexer.index_document(file_path)
 
