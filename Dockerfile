@@ -13,7 +13,7 @@ RUN pip install -e .
 # Stage 2
 FROM python:3.12 AS runner
  
-WORKDIR /app
+WORKDIR /ScholiumModel
  
 COPY --from=builder /app/venv venv
 COPY main.py main.py
