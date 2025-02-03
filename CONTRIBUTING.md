@@ -13,7 +13,7 @@ If I am missing a requirement please let me know.
 ### Continous Development
 Installing the package in development mode:
 ```shell
-pip install . -e
+pip install -e .
 ```
 
 ### Building Frontend Locally. 
