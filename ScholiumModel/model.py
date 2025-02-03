@@ -75,7 +75,8 @@ def generate(state: MessagesState):
         "You are an assistant for question-answering tasks. Your job is to recommend papers fron the retrieved context."
         "Use the following pieces of retrieved context to answer "
         "the question. If you don't know the answer, say that you "
-        "don't know. Also make sure to directly quote your sources and cite them, but do not make up sources or use sources that are not in the retrieved context."
+        "don't know. Do not make up sources or use sources that are not in the retrieved context."
+        "Cite your sources in IEEE citation. Also provide quotes from the retrieved context when possible."
         "\n\n"
         f"{docs_content}"
     )
