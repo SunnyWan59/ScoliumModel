@@ -21,4 +21,5 @@ dependencies = [
     "pinecone",
     "pypdf"
 
-]`
+]
+
