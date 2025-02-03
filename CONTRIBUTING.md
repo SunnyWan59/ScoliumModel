@@ -13,7 +13,13 @@ If I am missing a requirement please let me know.
 ### Continous Development
 Installing the package in development mode:
 ```shell
-pip install . -e
+pip install -e .
+```
+
+### Make a local .env file.
+Make a local .env file, create an accounts in corresponding services and define the API keys in the .env file.
+```shell
+cp .env.example .env
 ```
 
 ### Building Frontend Locally. 
