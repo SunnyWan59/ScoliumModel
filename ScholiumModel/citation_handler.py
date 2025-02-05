@@ -32,15 +32,15 @@ def get_citation(query:str, citation_style):
     else:
         raise SyntaxError("This citation style does not exist or has not been implemented yet")
     citations = []
-    retrieved_docs = vector_store.similarity_search(query.strip("\""), k=1)
+    retrieved_docs = vector_store.similarity_search(query.strip("\""), k=10)
     for doc in retrieved_docs:
-        print(doc.page_content)
         citations.append(make_citation(doc.metadata))
     return "\n\n".join(citations)
 
 
 if __name__ == "__main__":
     start_time = time.time()
-    print(get_citation("We explore how generating a chain of thought—a series of intermediate reasoning steps—significantly improves the ability of large language models to perform complex reasoning", "chicago"))
+    # print(get_citation("We explore how generating a chain of thought—a series of intermediate reasoning steps—significantly improves the ability of large language models to perform complex reasoning", "chicago"))
     # print(get_citation(" For rationale-augmented training and finetuning methods, it is costly to create a large set of high quality rationales, which is much more complicated than simple input–output pairs used in normal machine learning." ,"chicago"))
+    # print(get_citation("Consider one’s own thought process when solving a complicated reasoning task such as a multi-step math word problem", "chicago"))
     print("--- %s seconds ---" % (time.time() - start_time))
