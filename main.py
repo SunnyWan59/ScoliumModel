@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from ScholiumModel.model import compile_graph 
-
+from ScholiumModel.citation_handler import get_citation
 # For Debugging Purposes
 import logging
 logger = logging.getLogger('uvicorn.error')
@@ -34,4 +34,8 @@ Example:
 @app.get("/requests/{query}")
 async def read_item(query: str):
     logger.debug(f"response: {query}")
-    return graph.invoke({"messages": [{"role": "user", "content":query}]})['messages'][-1].content
+    return graph.invoke({"messages": [{"role": "user", "content":query}]})['messages'][-1]
+
+@app.get("/cite/{style}/{query}")
+async def cite_iteam(query:str,style):
+    return get_citation(query=query,citation_style=style)
