@@ -2,10 +2,13 @@ import os
 from dotenv import load_dotenv
 
 from langchain_core.tools import tool
-from langchain_core.messages import SystemMessage
-from langchain_core.documents import Document
 
-from langgraph.graph import START, StateGraph
+
+from langgraph.graph import END, START, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.graph import MessagesState, StateGraph
+from langchain_core.messages import SystemMessage
+
 
 from typing_extensions import List, TypedDict
 
@@ -13,6 +16,7 @@ from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import ChatOpenAI,OpenAIEmbeddings
 
+from ScholiumModel.citations import metadata_to_chicago
 
 
 load_dotenv()
@@ -43,23 +47,27 @@ system_prompt = (
 
 question_prefix = "Only give me the citation of this quote: "
 
-class State(TypedDict):
-    question: str
-    context: List[Document]
-    answer: str
+@tool(parse_docstring=True)
+def cite(query: str):
+    """Find a citation based on the query
+    Args:
+        query: the query to be cited
+    """
+    retrieved_docs = vector_store.similarity_search(query, k=2)
+    serialized_docs = []
+    for doc in retrieved_docs:
+        serialized_docs.append(metadata_to_chicago(doc.metadata))
+    serialized = "\n\n".join(serialized_docs)    
+    return serialized
 
-def retrieve(state: State):
-    retrieved_docs = vector_store.similarity_search(state["question"])
-    return retrieved_docs
 
-def compile_graph():
-    graph_builder = StateGraph(State).add_sequence([retrieve])
-    graph_builder.add_edge(START, "retrieve")
-    return graph_builder.compile()
-    
+def query_or_respond(state: MessagesState):
+    """Generate tool call for retrieval or respond."""
+    llm_with_tools = model.bind_tools([cite])
+    response = llm_with_tools.invoke(state["messages"])
+    return {"messages": [response]}
+
+tools = ToolNode([cite])
+
 if __name__ == "__main__":
-    question = question_prefix + "Another intuition is that chain of thought allows the model to spend more computation"
-    test_state = State(question= question)
-    context= retrieve(test_state)
-    md = context[0].metadata
-    print(md)
+    pass
