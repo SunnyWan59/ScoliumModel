@@ -38,4 +38,4 @@ async def read_item(query: str):
 
 @app.get("/cite/{query}")
 async def cite_iteam(query:str):
-    get_citation(query=query)
+    return get_citation(query=query)
