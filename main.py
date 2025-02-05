@@ -35,3 +35,7 @@ Example:
 async def read_item(query: str):
     logger.debug(f"response: {query}")
     return graph.invoke({"messages": [{"role": "user", "content":query}]})['messages'][-1].content
+
+@app.get("/cite/{query}")
+async def cite_iteam(query:str):
+    pass
