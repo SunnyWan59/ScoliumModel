@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from ScholiumModel.model import compile_graph 
-
+from ScholiumModel.citation_handler import get_citation
 # For Debugging Purposes
 import logging
 logger = logging.getLogger('uvicorn.error')
@@ -38,4 +38,4 @@ async def read_item(query: str):
 
 @app.get("/cite/{query}")
 async def cite_iteam(query:str):
-    pass
+    get_citation(query=query)
