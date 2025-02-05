@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-
+import time
 
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
@@ -27,5 +27,8 @@ def get_citation(query:str):
         citations.append(metadata_to_chicago(doc.metadata))
     return "\n\n".join(citations)
 
+
 if __name__ == "__main__":
+    start_time = time.time()
     print(get_citation("Another intuition is that chain of thought allows the model to spend more computation"))
+    print("--- %s seconds ---" % (time.time() - start_time))
