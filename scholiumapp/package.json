@@ -11,8 +11,10 @@
   "dependencies": {
     "@copilotkit/react-core": "^1.5.14",
     "@copilotkit/react-ui": "^1.5.14",
+    "@copilotkit/runtime": "^1.5.14",
     "dotenv": "^16.4.7",
     "next": "15.1.6",
+    "openai": "^4.83.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
