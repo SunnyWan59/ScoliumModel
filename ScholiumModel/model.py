@@ -119,8 +119,6 @@ def generate(state: MessagesState):
     response.response_metadata = metadata
     return {"messages": [response]}
 
-
-
 def compile_graph():
     graph_builder = StateGraph(MessagesState)
     graph_builder.add_node(query_or_respond)
@@ -157,6 +155,8 @@ def chat_in_terminal(thread: str):
             return
         else:
             chat(thread, input_message)
+
+RAG = compile_graph()
 
 if __name__ == "__main__":
     # chat_in_terminal("test1")

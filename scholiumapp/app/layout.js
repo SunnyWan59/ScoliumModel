@@ -1,5 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { CopilotKit } from "@copilotkit/react-core"; 
+
+
+require('dotenv').config();
+const publicApiKey = process.env.COPILOTKIT_API_KEY;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +27,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <CopilotKit publicApiKey="<your-copilot-cloud-public-api-key>"> 
+            {children}
+        </CopilotKit>
       </body>
     </html>
   );
