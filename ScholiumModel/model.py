@@ -51,14 +51,8 @@ def extract_paper_titles(text):
     Returns:
         List[str]: A list of quoted substrings, including the surrounding quote characters.
     """
-    # This pattern looks for a starting quote (" or '), then captures any characters
-    # (non-greedily) until it finds the same quote character again.
     pattern = r'(["\'])(.*?)\1'
-    
-    # re.finditer returns an iterator over all match objects.
     matches = re.finditer(pattern, text)
-    
-    # Extract the full matched substring (which includes the quotes) from each match.
     return [match.group(0) for match in matches]
 
 
