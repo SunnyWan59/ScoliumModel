@@ -23,7 +23,7 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
-      dot-env:
+      dotenv:
         specifier: ^16.4.7
         version: 16.4.7
     devDependencies:
