@@ -103,7 +103,7 @@ def generate(state: MessagesState):
         "Use the following pieces of retrieved context to answer "
         "the question. If you don't know the answer, say that you "
         "don't know. Do not make up sources or use sources that are not in the retrieved context."
-        "Surround the titles of the papers with quotation marks."
+        "Surround the titles of the papers with quotation marks. Always say Book at the begining."
         "\n\n"
         f"{docs_content}"
     )
