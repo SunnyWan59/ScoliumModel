@@ -5,6 +5,9 @@ import { CopilotChat } from "@copilotkit/react-ui";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 
 export default function Main() {
+  useCopilotChatSuggestions({
+    instructions: "Give me scholarly papers on Transformers",
+  });
     return (
       <>
         <h1 className="flex h-[60px] bg-black text-white items-center px-10 text-2xl font-medium">
@@ -15,8 +18,8 @@ export default function Main() {
             style={
               { 
                 "--copilot-kit-background-color": "#E0E9FD",
-                "--copilot-kit-secondary-color": "#000000",
-                "--copilot-kit-secondary-contrast-color": "#FFFFFF",
+                "--copilot-kit-secondary-color": "#FFFFFF",
+                "--copilot-kit-secondary-contrast-color": "#000000",
                 "--copilot-kit-primary-color": "#FFFFFF",
                 "--copilot-kit-contrast-color": "#000000",
               } as any
@@ -29,7 +32,7 @@ export default function Main() {
               }}
               labels={{
                 title: "Scholium",
-                initial: "Hi! How can I assist you with your research today?",
+                initial: "Hi! I am Scholium, your personal research assistant! Try asking me about transformers!",
               }}
             />
           </div>
