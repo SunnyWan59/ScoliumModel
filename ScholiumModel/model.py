@@ -51,14 +51,8 @@ def extract_paper_titles(text):
     Returns:
         List[str]: A list of quoted substrings, including the surrounding quote characters.
     """
-    # This pattern looks for a starting quote (" or '), then captures any characters
-    # (non-greedily) until it finds the same quote character again.
     pattern = r'(["\'])(.*?)\1'
-    
-    # re.finditer returns an iterator over all match objects.
     matches = re.finditer(pattern, text)
-    
-    # Extract the full matched substring (which includes the quotes) from each match.
     return [match.group(0) for match in matches]
 
 
@@ -109,7 +103,7 @@ def generate(state: MessagesState):
         "Use the following pieces of retrieved context to answer "
         "the question. If you don't know the answer, say that you "
         "don't know. Do not make up sources or use sources that are not in the retrieved context."
-        "Surround the titles of the papers with quotation marks."
+        "Surround the titles of the papers with quotation marks. Always say Book at the begining."
         "\n\n"
         f"{docs_content}"
     )
@@ -124,8 +118,6 @@ def generate(state: MessagesState):
     metadata = get_paper_metadata(used_papers, tool_messages[0].artifact)
     response.response_metadata = metadata
     return {"messages": [response]}
-
-
 
 def compile_graph():
     graph_builder = StateGraph(MessagesState)
@@ -163,6 +155,8 @@ def chat_in_terminal(thread: str):
             return
         else:
             chat(thread, input_message)
+
+RAG = compile_graph()
 
 if __name__ == "__main__":
     # chat_in_terminal("test1")
