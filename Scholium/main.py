@@ -1,3 +1,7 @@
+"""
+This is for the Scholium api, and not for the frontend.
+"""
+
 from fastapi import FastAPI
 from ScholiumModel.model import compile_graph 
 from ScholiumModel.citation_handler import get_citation
@@ -9,7 +13,7 @@ graph = compile_graph()
 app = FastAPI()
 
 
-'''
+
 """
 FastAPI server for the Scholium question-answering system.
 
@@ -29,8 +33,6 @@ Endpoints:
 Example:
     GET /requests/"What papers discuss machine learning?"
 """
-
-'''
 @app.get("/requests/{query}")
 async def read_item(query: str):
     logger.debug(f"response: {query}")
