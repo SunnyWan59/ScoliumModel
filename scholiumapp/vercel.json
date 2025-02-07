@@ -1,0 +1,15 @@
+{
+    "builds": [
+        {
+            "src": "../Scholium/ScholiumModel/server.py",
+            "use": "@vercel/python"
+        }
+
+    ],
+    "routes": [
+        {
+            "src":"/(.*)",
+            "dest":"../Scholium/ScholiumModel/server.py"
+        }
+    ]
+}
