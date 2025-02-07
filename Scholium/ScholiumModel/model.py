@@ -103,7 +103,7 @@ def generate(state: MessagesState):
         "Use the following pieces of retrieved context to answer "
         "the question. If you don't know the answer, say that you "
         "don't know. Do not make up sources or use sources that are not in the retrieved context."
-        "Surround the titles of the papers with quotation marks. Always say Book at the begining."
+        "Surround the titles of the papers with quotation marks."
         "\n\n"
         f"{docs_content}"
     )
@@ -133,8 +133,8 @@ def compile_graph():
     graph_builder.add_edge("tools", "generate")
     graph_builder.add_edge("generate", END)
     # checkpointer = PostgresSaver.from_conn_string(DB_URI)
-    # checkpointer = MemorySaver()
-    graph = graph_builder.compile()
+    checkpointer = MemorySaver()
+    graph = graph_builder.compile(checkpointer=checkpointer)
     return graph
 
 
@@ -159,5 +159,5 @@ def chat_in_terminal(thread: str):
 RAG = compile_graph()
 
 if __name__ == "__main__":
-    # chat_in_terminal("test1")
-    chat("123","Give me papers on ecoders")
+    chat_in_terminal("test1")
+    # chat("123","Give me papers on ecoders")
