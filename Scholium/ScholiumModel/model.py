@@ -59,7 +59,8 @@ def extract_paper_titles(text):
 def get_paper_metadata(titles:list[str], metadata):
     metadata_list = []
     for title in titles:
-        metadata_list.append(metadata[title.strip("\"")])
+        if title.strip("\"") in metadata:
+            metadata_list.append(metadata[title.strip("\"")])
     return metadata_list
 
 
