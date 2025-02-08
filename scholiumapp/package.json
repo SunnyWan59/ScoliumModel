@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-run": "cd ../scholium && pip install -r requirements.txt && pip install . && python server.py",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "fastapi-run": " pip install -r ../Scholium/requirements.txt && python ../Scholium/server.py",
+    "next-dev": "next dev",
+    "dev": "concurrently \"npm run next-dev\" \" npm run fastapi-run\"",
+    "next-start": "next start",
+    "build": "next build ",
+    "start": "concurrently \"npm run next-start\" \" npm run fastapi-run\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -27,7 +29,7 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "npm" : ">=10.0.0",
-    "pnpm":"10.2.1"
+    "npm": ">=10.0.0",
+    "pnpm": "10.2.1"
   }
 }
