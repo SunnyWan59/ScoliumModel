@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "fastapi-run": "cd ../scholium && pip install -r requirements.txt && pip install . && python server.py",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -12,6 +13,7 @@
     "@copilotkit/react-core": "^1.5.14",
     "@copilotkit/react-ui": "^1.5.14",
     "@copilotkit/runtime": "^1.5.14",
+    "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "next": "15.1.6",
     "openai": "^4.83.0",
