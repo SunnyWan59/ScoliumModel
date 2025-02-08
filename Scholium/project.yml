@@ -1,0 +1,7 @@
+project:
+  name: "Scholium"
+  version: "0.1.0"
+  description: "AI research assistant."
+
+python:
+  version: "3.12"
