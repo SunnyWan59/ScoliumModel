@@ -26,6 +26,6 @@
     "typescript": "5.7.3"
   },
   "engines": {
-    "node": "23.5.0"
+    "node": "9.15.3"
   }
 }
