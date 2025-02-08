@@ -6,6 +6,7 @@ build-backend = "flit_core.buildapi"
 name = "ScholiumModel"
 version = "0.1.0"
 description = "The model behind Scholium"
+python_requires = "3.12.0"
 authors = [
     { name="Sunny Wan", email="Sunnywan2020@gmail.com" }
 ]
