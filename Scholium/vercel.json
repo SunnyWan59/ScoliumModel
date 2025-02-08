@@ -1,7 +1,7 @@
 {
     "functions": {
       "server.py": {
-        "runtime": "python3.12"
+        "runtime": "@vercel/python@3.12.0"
       }
     },
     "routes": [
