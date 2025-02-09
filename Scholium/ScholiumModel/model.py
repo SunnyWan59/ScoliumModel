@@ -21,6 +21,8 @@ from dotenv import load_dotenv
 
 from ScholiumModel.citations import metadata_to_chicago
 
+from typing import Optional
+
 load_dotenv()
 
 LANGSMITH_API_KEY = os.environ.get("LANGSMITH_API_KEY")
@@ -40,6 +42,14 @@ embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 pc = Pinecone(api_key= pinecone_api_key)
 index = pc.Index("scholium-index")
 vector_store = PineconeVectorStore(embedding=embeddings, index=index)
+
+class ResearchState(MessagesState):
+    """
+    This is the state of the agent.
+    It is a subclass of the MessagesState class from langgraph.
+    """
+    answer: Optional[str]
+
 
 def extract_paper_titles(text):
     """
@@ -118,10 +128,12 @@ def generate(state: MessagesState):
     used_papers = extract_paper_titles(response.content)
     metadata = get_paper_metadata(used_papers, tool_messages[0].artifact)
     response.response_metadata = metadata
-    return {"messages": [response]}
+    print(response)
+    return {"messages": [response], "answer": response.content}
+
 
 def compile_graph():
-    graph_builder = StateGraph(MessagesState)
+    graph_builder = StateGraph(ResearchState)
     graph_builder.add_node(query_or_respond)
     graph_builder.add_node(tools)
     graph_builder.add_node(generate)
