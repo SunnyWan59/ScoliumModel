@@ -1,6 +1,4 @@
 'use client';
-
-import { useCoAgent } from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 
@@ -35,7 +33,8 @@ export default function Main() {
                 initial: "Hi! I am Scholium, your personal research assistant! Try asking me about transformers!",
               }}
             />
-          </div>
+          </div> 
       </>
+      
     );
   }
