@@ -2,7 +2,7 @@
 An AI reasearch assistant that recommends you papers based on your query. Please feel free to contribute!
 
 
-#LOCAL DEVELOPMENT
+# LOCAL DEVELOPMENT
 To start Scholium locally:
 ```Shell
 cd scholiumapp
