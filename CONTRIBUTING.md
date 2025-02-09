@@ -27,8 +27,8 @@ cp .env.example .env
 To set up the chat locally:
 ```shell
 
-cd ScholiumModel
-streamlit run chat.py
+cd scholiumapp 
+npm run dev
 
 ```
 
