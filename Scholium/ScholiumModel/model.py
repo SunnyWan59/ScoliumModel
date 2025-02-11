@@ -146,8 +146,6 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
         prompt,
         config)
     response = response.tool_calls[0]["args"]
-    # used_papers = extract_paper_titles(response["markdown"])
-    # metadata = get_paper_metadata(used_papers, response["metadata"])
     return {"answer": response, "paper_metadata": response["metadata"]}
 
 
