@@ -6,10 +6,10 @@ import { useCoAgent } from "@copilotkit/react-core";
 import { DisplayMarkdown } from "./markdown-display";
 import { ResearchState} from "../lib/agent-state";
 
-function addNewlines(text: string): string {
-  if (!text) return "";
-  return text.replace(/\n/g, "\n\n");
-}
+// function addNewlines(text: string): string {
+//   if (!text) return "";
+//   return text.replace(/\n/g, "\n\n");
+// }
 
 
 export function Results() {
@@ -32,15 +32,14 @@ export function Results() {
           </h1>
         </div>
 
-
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 lg:col-span-8 flex flex-col">
             <h2 className="flex items-center gap-x-2">
             </h2>
             <div className="text-slate-700 font-light">
 
-                  <DisplayMarkdown markdown={addNewlines(agentState?.answer)} />
-
+                  <DisplayMarkdown markdown={agentState?.answer.markdown} />
+                {agentState?.answer}
             </div>
           </div>
 
