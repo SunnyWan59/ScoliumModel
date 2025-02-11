@@ -139,7 +139,6 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
     for message in state["messages"]:
         if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls):
             prompt.append(message)
-
     response = await model.bind_tools(
         [PaperSummaryTool],
         tool_choice="PaperSummaryTool"
@@ -147,9 +146,9 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
         prompt,
         config)
     response = response.tool_calls[0]["args"]
-    # used_papers = extract_paper_titles(response.content)
-    # metadata = get_paper_metadata(used_papers, tool_messages[0].artifact)
-    return {"messages": [response], "answer": response, "paper_metadata": {}}
+    # used_papers = extract_paper_titles(response["markdown"])
+    # metadata = get_paper_metadata(used_papers, response["metadata"])
+    return {"answer": response, "paper_metadata": response["metadata"]}
 
 
 

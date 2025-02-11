@@ -17,7 +17,6 @@ export function Results() {
   const { state: agentState } = useCoAgent<ResearchState>({
     name: "research_agent"
   });
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -50 }}
@@ -34,23 +33,24 @@ export function Results() {
 
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 lg:col-span-8 flex flex-col">
-            <h2 className="flex items-center gap-x-2">
-            </h2>
             <div className="text-slate-700 font-light">
-
-                  <DisplayMarkdown markdown={agentState?.answer.markdown} />
-                {agentState?.answer}
+                <DisplayMarkdown markdown={agentState?.answer?.markdown} />
+                <pre className="mt-8 p-4 bg-slate-100 rounded-lg overflow-x-auto">
+                    <code>
+                        {JSON.stringify(agentState?.answer?.metadata, null, 2)}
+                    </code>
+                </pre>
             </div>
           </div>
 
 
-          {/* {agentState?.answer?.references?.length && (
+          {agentState?.answer?.metadata?.length && (
             <div className="flex col-span-12 lg:col-span-4 flex-col gap-y-4 w-[200px]">
               <h2 className="flex items-center gap-x-2">
                 References
               </h2>
               <ul className="text-slate-900 font-light text-sm flex flex-col gap-y-2">
-                {agentState?.answer?.references?.map(
+                {agentState?.answer?.metadata.map(
                   (ref: any, idx: number) => (
                     <li key={idx}>
                       <a
@@ -65,7 +65,7 @@ export function Results() {
                 )}
               </ul>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </motion.div>
