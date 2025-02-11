@@ -1,11 +1,11 @@
 // Define an interface for an author.
-interface Author {
+type Author = {
     firstName: string;
     lastName: string;
 }
   
 // Define an interface for the citation data.
-interface CitationData {
+type CitationData ={
     authors: Author[];
     title: string;
     publisher: string;

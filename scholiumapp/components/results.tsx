@@ -7,7 +7,7 @@ import { DisplayMarkdown } from "./markdown-display";
 import { ResearchState} from "../lib/agent-state";
 import SelectCitation from "./ui/select"
 import { useStyleContext } from "../lib/citation-context";
-
+import CopyToClipboard from "./ui/copy-button";
 
 export function Results() {
   const { researchQuery } = useChatContext();
@@ -69,6 +69,7 @@ export function Results() {
                 )}
                 <li className="w-48">
                     <SelectCitation/>
+                    <CopyToClipboard/>
                 </li>
               </ul>
             </div>
