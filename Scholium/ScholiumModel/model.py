@@ -1,30 +1,27 @@
 import os
-from langchain_openai import ChatOpenAI,OpenAIEmbeddings
 
 from langchain_core.tools import tool
-from langchain_core.messages import SystemMessage,HumanMessage
+from langchain_core.messages import SystemMessage
 from langchain_core.runnables import RunnableConfig
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 
-
 from langgraph.graph import END
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.graph import MessagesState, StateGraph
-
-# from langgraph.checkpoint.postgres import PostgresSaver 
 from langgraph.checkpoint.memory import MemorySaver
+from langchain_openai import ChatOpenAI,OpenAIEmbeddings
 
 from dotenv import load_dotenv
 
+from typing import Optional
 from pydantic import BaseModel, Field
 
-from ScholiumModel.citations import metadata_to_chicago
 from ScholiumModel.model_utils import get_paper_metadata, extract_paper_titles
 
 from copilotkit.langgraph import copilotkit_customize_config
 
-from typing import Optional
+
 
 load_dotenv()
 

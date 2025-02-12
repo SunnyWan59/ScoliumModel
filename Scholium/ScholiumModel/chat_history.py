@@ -4,7 +4,7 @@ Work in progress
 '''
 
 from psycopg_pool import ConnectionPool
-from langgraph.checkpoint.postgres import PostgresSaver
+# from langgraph.checkpoint.postgres import PostgresSaver
 
 import os 
 from dotenv import load_dotenv
@@ -44,16 +44,16 @@ class DatabaseConnection:
         # Close all connections in the pool
         self.connection_pool.close()
         
-class ChatHistory(DatabaseConnection):
-    def __init__(self, 
-                 DB_URI: str = DB_URI, 
-                 session_id: str = "test_session",
-                 table_name: str = "chat_history"):
-        super().__init__(DB_URI, session_id)
-        self.table_name = table_name
-        # self.create_table(self.table_name)
-        self.checkpointer = PostgresSaver(self.connection_pool)
-        self.checkpointer.setup()
+# class ChatHistory(DatabaseConnection):
+#     def __init__(self, 
+#                  DB_URI: str = DB_URI, 
+#                  session_id: str = "test_session",
+#                  table_name: str = "chat_history"):
+#         super().__init__(DB_URI, session_id)
+#         self.table_name = table_name
+#         # self.create_table(self.table_name)
+#         self.checkpointer = PostgresSaver(self.connection_pool)
+#         self.checkpointer.setup()
         
     
     
