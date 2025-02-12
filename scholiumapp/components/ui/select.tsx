@@ -10,6 +10,8 @@ import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
+import "./select-style.css";
+
 
 
 const SelectCitation= () => {
@@ -28,7 +30,7 @@ const SelectCitation= () => {
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
                     <Select.Viewport className="SelectViewport">
-                        <Select.Group>
+                        <Select.Group style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
                             <SelectItem value="APA">APA</SelectItem>
                             <SelectItem value="MLA">MLA</SelectItem>
                             <SelectItem value="Chicago">Chicago</SelectItem>

@@ -49,9 +49,10 @@ export function Results() {
           {agentState?.answer?.metadata?.length && (
             <div className="flex col-span-12 lg:col-span-4 flex-col gap-y-4 w-[200px]">
               <h2 className="flex items-center gap-x-2">
-                <div>
-                    References 
-                </div> 
+                <div className="flex items-center gap-x-2">
+                    <p>References</p>
+                    <SelectCitation/>
+                </div>
 
               </h2>
               <ul className="text-slate-900 font-light text-sm flex flex-col gap-y-2">
@@ -68,7 +69,6 @@ export function Results() {
                   )
                 )}
                 <li className="w-48">
-                    <SelectCitation/>
                     <CopyToClipboard/>
                 </li>
               </ul>
