@@ -1,14 +1,18 @@
 {
-    "functions": {
-        "api/server.py": {
-            "runtime": "python3.12.0",
-            "maxDuration": 120
-        }
-    },
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "server.py"
-      }
-    ]
-  }
+  "version": 2,
+  "functions": {
+    "api/index.py": {
+      "runtime": "@vercel/python@4.0.0",
+      "config": {
+        "pythonVersion": "3.12"
+      },
+      "maxDuration": "120"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
+  ]
+}
