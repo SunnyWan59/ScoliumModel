@@ -1,11 +1,10 @@
 {
-  "builds":[
-      {
-          "src": "server.py",
-          "use": "@vercel/python",
-          "maxDuration": 120
-      }
-  ],
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.12",
+      "maxduration": 120
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",
