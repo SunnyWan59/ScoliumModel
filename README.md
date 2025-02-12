@@ -1,8 +1,11 @@
 # scholium
-An AI reasearch assistant that recommends you papers based on your query. Please feel free to contribute!
+An AI reasearch assistant that recommends you papers based on your query. 
 
 
-#LOCAL DEVELOPMENT
+Please feel free to contribute!
+
+
+# Local Development
 To start Scholium locally:
 ```Shell
 cd scholiumapp
