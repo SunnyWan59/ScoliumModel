@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/server.py": {
-      "runtime": "@vercel/python@4.0.0",
+      "runtime": "@vercel/python@4.7.1",
       "maxDuration": 120
     }
   },
