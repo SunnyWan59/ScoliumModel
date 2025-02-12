@@ -1,6 +1,5 @@
-# scholium
-An AI reasearch assistant that recommends you papers based on your query. 
-
+# Scholium
+Scholium is an AI research assistant that recommends you scholarly sources based on your query. 
 
 Please feel free to contribute!
 
