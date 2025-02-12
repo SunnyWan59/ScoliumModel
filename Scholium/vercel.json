@@ -6,7 +6,7 @@
     }
   },
   "rewrites": [
-    { "source": "/(.*)", "destination": "app/api/server.py" }
+    { "source": "/(.*)", "destination": "api/server.py" }
   ],
   "routes": [
     {
