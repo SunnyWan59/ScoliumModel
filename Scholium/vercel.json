@@ -1,8 +1,8 @@
 {
   "functions": {
-    "api/index.py": {
+    "server.py": {
       "runtime": "python3.12",
-      "maxduration": 120
+      "maxDuration": 120
     }
   },
   "routes": [
