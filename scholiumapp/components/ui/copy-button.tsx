@@ -5,6 +5,7 @@ import { useCoAgent } from "@copilotkit/react-core";
 import { ResearchState } from '../../lib/agent-state';
 import { processAndGenerateCitations } from '../../lib/metadata-citations';
 import { useStyleContext } from '../../lib/citation-context';
+import { Button } from "@radix-ui/themes";
 
 const CopyToClipboard: React.FC = () => {
   const { state: agentState } = useCoAgent<ResearchState>({
@@ -29,12 +30,11 @@ const CopyToClipboard: React.FC = () => {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <button
+      <Button
         onClick={handleCopy}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
       >
         Copy Citations
-      </button>
+      </Button>
     </div>
   );
 };

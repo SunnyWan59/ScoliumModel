@@ -1,69 +1,31 @@
 "use client";
 
 import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
 import { useStyleContext } from "../../lib/citation-context";
-import { Select } from "radix-ui";
-import classnames from "classnames";
-import {
-	CheckIcon,
-	ChevronDownIcon,
-	ChevronUpIcon,
-} from "@radix-ui/react-icons";
-import "./select-style.css";
+import { Button } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
-
-
-const SelectCitation= () => {
+const SelectCitation = () => {
     const { style, setStyle } = useStyleContext();
-    return(
-        <Select.Root value={style} onValueChange={setStyle}>
-            <Select.Trigger className="SelectTrigger" aria-label="Food">
-                <Select.Value placeholder="Citation Style" />
-                <Select.Icon className="SelectIcon">
-                    <ChevronDownIcon />
-                </Select.Icon>
-            </Select.Trigger>
-            <Select.Portal>
-                <Select.Content className="SelectContent">
-                    <Select.ScrollUpButton className="SelectScrollButton">
-                        <ChevronUpIcon />
-                    </Select.ScrollUpButton>
-                    <Select.Viewport className="SelectViewport">
-                        <Select.Group style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-                            <SelectItem value="APA">APA</SelectItem>
-                            <SelectItem value="MLA">MLA</SelectItem>
-                            <SelectItem value="Chicago">Chicago</SelectItem>
-                            <SelectItem value="Harvard">Harvard</SelectItem>
-                            <SelectItem value="Vancouver">Vancouver</SelectItem>
-                        </Select.Group>
-                    </Select.Viewport>
-                    <Select.ScrollDownButton className="SelectScrollButton">
-                        <ChevronDownIcon />
-                    </Select.ScrollDownButton>
-                </Select.Content>
-            </Select.Portal>
-        </Select.Root>
-    )
+    return (
+        <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+                <Button variant="soft">
+                    {style || "Citation Style"}
+                    <ChevronDown className="h-4 w-4" />
+                </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content className="bg-white rounded-md p-1 shadow-lg"> 
+                <DropdownMenu.Item onClick={() => setStyle('APA')}>APA</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => setStyle('MLA')}>MLA</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => setStyle('Chicago')}>Chicago</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => setStyle('Harvard')}>Harvard</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => setStyle('Vancouver')}>Vancouver</DropdownMenu.Item>
+            </DropdownMenu.Content>
+        </DropdownMenu.Root>
+    );
 };
-
-const SelectItem = React.forwardRef<
-	HTMLDivElement,
-	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ children, className, ...props }, ref) => {
-	return (
-		<SelectPrimitive.Item
-			ref={ref}
-			className={classnames("SelectItem", className)}
-			{...props}
-		>
-			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-			<SelectPrimitive.ItemIndicator className="SelectItemIndicator">
-				<CheckIcon/>
-			</SelectPrimitive.ItemIndicator>
-		</SelectPrimitive.Item>
-	);
-});
-SelectItem.displayName = "SelectCitation";
 
 export default SelectCitation;
