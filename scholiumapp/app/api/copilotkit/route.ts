@@ -12,7 +12,7 @@ import {
   const langsmithApiKey = process.env.LANGSMITH_API_KEY as string 
   const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY });
   const serviceAdapter = new OpenAIAdapter({ openai } as any);
-
+  export const maxDuration = 300;
  
   export const POST = async (req: NextRequest) => {
 
