@@ -17,7 +17,6 @@ export default function Page() {
 
 function Home() {
   return (
-    <body>
       <div className="w-100% h-100%">
         <Theme accentColor="brown" grayColor="sand" radius="full">
         {/* <Main/> */}
@@ -28,7 +27,6 @@ function Home() {
           </ChatContextProvider>
         </Theme>
       </div>
-    </body>
     
   );
 }
