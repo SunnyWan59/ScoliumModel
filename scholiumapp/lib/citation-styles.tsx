@@ -1,11 +1,11 @@
 // Define an interface for an author.
-type Author = {
+export type Author = {
     firstName: string;
     lastName: string;
 }
   
 // Define an interface for the citation data.
-type CitationData ={
+export type CitationData ={
     authors: Author[];
     title: string;
     publisher: string;
@@ -163,7 +163,7 @@ function formatAuthorsHarvard(authors: Author[]): string {
  * Generates a citation in MLA format.
  * Example: "Doe, John, et al. Understanding TypeScript. Tech Books Publishing, 2023."
  */
-function generateMLACitation(data: CitationData): string {
+export function generateMLACitation(data: CitationData): string {
     const authors = formatAuthorsMLA(data.authors);
     return `${authors}. ${data.title}. ${data.publisher}, ${data.year}.`;
 }
@@ -172,7 +172,7 @@ function generateMLACitation(data: CitationData): string {
  * Generates a citation in APA format.
  * Example: "Doe, J., & Smith, J. (2023). Understanding TypeScript. Tech Books Publishing."
  */
-function generateAPACitation(data: CitationData): string {
+export function generateAPACitation(data: CitationData): string {
     const authors = formatAuthorsAPA(data.authors);
     return `${authors} (${data.year}). ${data.title}. ${data.publisher}.`;
 }
@@ -181,7 +181,7 @@ function generateAPACitation(data: CitationData): string {
  * Generates a citation in Chicago format.
  * Example: "Doe, John, Jane Smith, and Emily Johnson. Understanding TypeScript. Tech Books Publishing, 2023."
  */
-function generateChicagoCitation(data: CitationData): string {
+export function generateChicagoCitation(data: CitationData): string {
     const authors = formatAuthorsChicago(data.authors);
     return `${authors}. ${data.title}. ${data.publisher}, ${data.year}.`;
 }
@@ -192,7 +192,7 @@ function generateChicagoCitation(data: CitationData): string {
  * "Doe, J. and Smith, J. (2023) Understanding TypeScript. Tech Books Publishing."
  * For more than three authors, only the first author is shown followed by "et al."
  */
-function generateHarvardCitation(data: CitationData): string {
+export function generateHarvardCitation(data: CitationData): string {
     const authors = formatAuthorsHarvard(data.authors);
     return `${authors} (${data.year}) ${data.title}. ${data.publisher}.`;
 }
@@ -201,7 +201,7 @@ function generateHarvardCitation(data: CitationData): string {
  * Generates a citation in Vancouver format.
  * Example: "Doe J, Smith J, Johnson E. Understanding TypeScript. Tech Books Publishing; 2023."
  */
-function generateVancouverCitation(data: CitationData): string {
+export function generateVancouverCitation(data: CitationData): string {
     const authors = formatAuthorsVancouver(data.authors);
     return `${authors}. ${data.title}. ${data.publisher}; ${data.year}.`;
 }

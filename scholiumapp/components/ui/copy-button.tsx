@@ -3,14 +3,18 @@
 import React, { useState } from 'react';
 import { useCoAgent } from "@copilotkit/react-core";
 import { ResearchState } from '../../lib/agent-state';
+import { processAndGenerateCitations } from '../../lib/metadata-citations';
+import { useStyleContext } from '../../lib/citation-context';
 
 const CopyToClipboard: React.FC = () => {
   const { state: agentState } = useCoAgent<ResearchState>({
     name: "research_agent"
   });
+  const { style} = useStyleContext();
   const [copied, setCopied] = useState(false);
-  const textToCopy = agentState?.answer?.markdown;
-
+  const citations = processAndGenerateCitations(agentState?.answer?.metadata, style).join('\n')
+  
+  const textToCopy = citations;
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(textToCopy);

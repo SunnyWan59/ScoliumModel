@@ -1,4 +1,4 @@
-import "./citation-styles";
+import { generateAPACitation, generateMLACitation, generateChicagoCitation, generateHarvardCitation, generateVancouverCitation, CitationData, Author } from "./citation-styles";
 
 
 /**
@@ -11,16 +11,15 @@ function formatMetadata(rawMetadataList: any[]): CitationData[] {
     // Extract and format authors
     const authors: Author[] = [];
     if (rawMetadata.authors) {
-      rawMetadata.authors.forEach((author: string) => {
-        // Handle cases where author name might be "LastName, FirstName" or "FirstName LastName"
-        const nameParts = author.includes(',') 
-          ? author.split(',').map(part => part.trim()).reverse()
-          : author.split(' ');
-
-        authors.push({
-          firstName: nameParts[0] || '',
-          lastName: nameParts[nameParts.length - 1] || ''
-        });
+      // Split author string by commas and process each author
+      rawMetadata.authors.split(',').forEach(authorString => {
+        const nameParts = authorString.trim().split(' ');
+        if (nameParts.length >= 2) {
+          authors.push({
+            firstName: nameParts.slice(0, -1).join(' '), // Everything except last name
+            lastName: nameParts[nameParts.length - 1]    // Last name
+          });
+        }
       });
     }
 
