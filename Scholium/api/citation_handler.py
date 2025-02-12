@@ -6,7 +6,7 @@ from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings
 
-from ScholiumModel.citations import metadata_to_chicago, metadata_to_apa, metadata_to_mla
+from api.citations import metadata_to_chicago, metadata_to_apa, metadata_to_mla
 
 
 load_dotenv()

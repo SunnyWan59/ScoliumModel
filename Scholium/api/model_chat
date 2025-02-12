@@ -1,4 +1,4 @@
-from ScholiumModel.model import compile_graph
+from api.model import compile_graph
 
 import os
 from langchain_openai import ChatOpenAI,OpenAIEmbeddings

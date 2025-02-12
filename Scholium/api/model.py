@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from typing import Optional
 from pydantic import BaseModel, Field
 
-from ScholiumModel.model_utils import get_paper_metadata, extract_paper_titles
+from api.model_utils import get_paper_metadata, extract_paper_titles
 
 from copilotkit.langgraph import copilotkit_customize_config
 
