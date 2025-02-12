@@ -1,5 +1,6 @@
 """
 This is for the Scholium api, and not for the frontend.
+THIS IS DEPRICATED
 """
 
 from fastapi import FastAPI
