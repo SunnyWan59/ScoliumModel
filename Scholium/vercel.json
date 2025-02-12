@@ -2,7 +2,7 @@
     "functions": {
         "api/server.py": {
             "runtime": "@vercel/python",
-            "maxDuration": 120
+            "maxDuration": 20
         }
     },
     "routes": [
