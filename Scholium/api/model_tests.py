@@ -1,7 +1,8 @@
-from api.model import compile_graph
+from api.model import RAG
 
 import os
 from langchain_openai import ChatOpenAI,OpenAIEmbeddings
+from langchain_core.messages import HumanMessage
 
 
 from pinecone import Pinecone
@@ -27,26 +28,19 @@ pc = Pinecone(api_key= pinecone_api_key)
 index = pc.Index("scholium-index")
 vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 
-def chat(thread:str, input_message:str):
-        graph = compile_graph()
-        config = {"configurable": {"thread_id": thread}}
+async def invoke_chat(query:str, thread: str):
+    input_messages = [HumanMessage(query)]
+    config = {"configurable": {"thread_id": thread}}
+    output = await RAG.ainvoke({"messages": input_messages},config)
+    output["messages"][-1].pretty_print()
 
-        for step in graph.stream(
-            {"messages": [{"role": "user", "content": input_message}]},
-            stream_mode="values",
-            config= config,):
-            step["messages"][-1].pretty_print()
-
-def chat_in_terminal(thread: str):
-    while True:
-        input_message = input("Enter your query:")
-        if input_message == "exit":
-            print("Exiting...")
-            return
-        else:
-            chat(thread, input_message)
-
+async def test_chat():
+    thread = "123"
+    await invoke_chat("Hello", thread)
+    await invoke_chat("dog",thread)
+    
 
 if __name__ == "__main__":
-    # chat_in_terminal("test1")
-    chat("123","Give me papers on ecoders")
+
+    import asyncio  
+    asyncio.run(test_chat())
