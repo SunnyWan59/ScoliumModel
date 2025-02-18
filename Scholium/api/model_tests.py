@@ -44,8 +44,16 @@ def test_filter_results():
     filter_results(retrieved_docs)
     assert(len(retrieved_docs) == 0)
 
+def draw_graph(graph):
+    from IPython.display import Image, display
+    image_obj = Image(graph.get_graph().draw_mermaid_png())
+    with open("graph.png", "wb") as f:
+        f.write(image_obj.data)
+
+
 if __name__ == "__main__":
 
     import asyncio  
     # asyncio.run(test_chat())
-    test_filter_results()
+    # test_filter_results()
+    # draw_graph(RAG)
