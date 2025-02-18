@@ -8,7 +8,7 @@ from langchain_core.messages import HumanMessage
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 
-
+from api.model_utils import filter_results
 
 LANGSMITH_API_KEY = os.environ.get("LANGSMITH_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -39,8 +39,13 @@ async def test_chat():
     await invoke_chat("Hello", thread)
     await invoke_chat("dog",thread)
     
+def test_filter_results():
+    retrieved_docs = vector_store.similarity_search_with_score("Dogs are really cute", k=1) 
+    filter_results(retrieved_docs)
+    assert(len(retrieved_docs) == 0)
 
 if __name__ == "__main__":
 
     import asyncio  
-    asyncio.run(test_chat())
+    # asyncio.run(test_chat())
+    test_filter_results()
