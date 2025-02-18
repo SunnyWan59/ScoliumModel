@@ -3,7 +3,7 @@ requires = ["flit_core>=3.4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "ScholiumModel"
+name = "api"
 version = "0.1.0"
 description = "Your personal research assistant."
 python_requires = "3.12.0"
