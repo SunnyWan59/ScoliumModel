@@ -57,6 +57,7 @@ class ResearchState(MessagesState):
 def retrieve(query: str):
     """Retrieve information related to a query."""
     retrieved_docs = vector_store.similarity_search_with_score(query, k=10)
+    retrieved_docs = filter_results(retrieved_docs, 0)
     serialized_docs = []
     retrieved_metadata = {}
     for doc in retrieved_docs:
@@ -102,7 +103,6 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
     """
     The generate summary node is responsible for summarizing the retrieved papers.
     """
-    
     config = copilotkit_customize_config(
         config,
         emit_intermediate_state=[
@@ -121,6 +121,10 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
     tool_messages = recent_tool_messages[::-1]
 
     docs_content = "\n\n".join(doc.content for doc in tool_messages)
+
+    # Dealing with an out of context question
+    if len(docs_content)==0:
+        return {"answer": "Sorry, this query seems to be outside of our corpus. If you have suggestions for papers that should be included, please email: sunnywan2020@gmail.com and let me know what papers/topics I should include!", "paper_metadata": {}}
 
     system_message_content = (
         "You are an assistant for question-answering tasks. Your job is to recommend and summarize papers from the retrieved context."

@@ -25,7 +25,7 @@ model = ChatOpenAI(
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 pc = Pinecone(api_key= pinecone_api_key)
-index = pc.Index("scholium-index")
+index = pc.Index("test-index")
 vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 
 async def invoke_chat(query:str, thread: str):
@@ -36,12 +36,13 @@ async def invoke_chat(query:str, thread: str):
 
 async def test_chat():
     thread = "123"
-    await invoke_chat("Hello", thread)
+    # await invoke_chat("Hello", thread)
     await invoke_chat("dog",thread)
+    await invoke_chat("Give me papers on BERT",thread)
     
 def test_filter_results():
-    retrieved_docs = vector_store.similarity_search_with_score("Dogs are really cute", k=1) 
-    filter_results(retrieved_docs)
+    retrieved_docs = vector_store.similarity_search_with_score("Transformers", k=1) 
+    retrieved_docs = filter_results(retrieved_docs)
     assert(len(retrieved_docs) == 0)
 
 def draw_graph(graph):
@@ -55,5 +56,5 @@ if __name__ == "__main__":
 
     import asyncio  
     # asyncio.run(test_chat())
-    # test_filter_results()
+    test_filter_results()
     # draw_graph(RAG)

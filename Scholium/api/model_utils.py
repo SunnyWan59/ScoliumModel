@@ -27,10 +27,12 @@ def filter_results(response, score_cutoff = 0.8):
     '''
     This exists because, for some stupid reason, pinecone doesn't have a way to cutoff low similarity responses
     '''
-    # return [result for result in response['results'][0]['matches'] if result['score'] >= score_cutoff]
+    new_response = []
     for i, match in enumerate(response):
         score  = match[1]
-        if score < score_cutoff:
-            response.pop(i)
+        if score >= score_cutoff:
+            new_response.append(match[0])
+    return new_response
+        
 
 
