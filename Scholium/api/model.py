@@ -12,17 +12,15 @@ from langgraph.graph import MessagesState, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_openai import ChatOpenAI,OpenAIEmbeddings
 
-from dotenv import load_dotenv
-
+from openai import OpenAI
 from typing import Optional
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
-from api.model_utils import get_paper_metadata, extract_paper_titles
+from api.model_utils import filter_results
+from api.pinecone_vectorstore import ScholiumPineconeVectorStore
 
 from copilotkit.langgraph import copilotkit_customize_config
-
-from api.model_utils import filter_results
-
 
 load_dotenv()
 
@@ -38,11 +36,13 @@ model = ChatOpenAI(
     max_retries=2,
 )
 
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+# embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 index_name = "arxiv-index"
 pc = Pinecone(api_key= pinecone_api_key)
 index = pc.Index(index_name)
-vector_store = PineconeVectorStore(embedding=embeddings, index=index)
+# vector_store = PineconeVectorStore(embedding=embeddings, index=index)
+client = OpenAI(api_key=OPENAI_API_KEY)
+vector_store = ScholiumPineconeVectorStore(embedding_client= client, index = index)
 
 class ResearchState(MessagesState):
     """
@@ -55,21 +55,15 @@ class ResearchState(MessagesState):
 @tool(response_format="content_and_artifact")
 def retrieve(query: str):
     """Retrieve information related to a query."""
-    # retrieved_docs = vector_store.similarity_search_with_score(query, k=10)
-    retrieved_docs = index.search_records(
-        namespace="", 
-        query={
-            "inputs": {"text": query}, 
-            "top_k": 3
-        }
-    )
-    retrieved_docs = filter_results(retrieved_docs, 0)
-    serialized_docs = []
-    retrieved_metadata = {}
-    for doc in retrieved_docs:
-        formatted_doc = f"Source: {doc.metadata}\nContent: {doc.page_content}"
-        serialized_docs.append(formatted_doc)
-        retrieved_metadata[doc.metadata['Title']] = doc.metadata
+    retrieved_docs = vector_store.similarity_search_with_score_cutoff(query= query, top_k= 10, score_cutoff = 0.5)
+    serialized_docs = [
+        f"Source: {doc} \nContent: {doc["summary"]}" 
+        for doc in retrieved_docs['metadata']
+    ]
+    retrieved_metadata = {
+        doc['title']: doc 
+        for doc in retrieved_docs['metadata']
+    }
     serialized = "\n\n".join(serialized_docs)
     return serialized, retrieved_metadata
 
@@ -126,7 +120,7 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
             break
     tool_messages = recent_tool_messages[::-1]
 
-    docs_content = "\n\n".join(doc.content for doc in tool_messages)
+    docs_content = "\n\n".join(doc['summary'] for doc in tool_messages)
 
     # Dealing with an out of context question
     if len(docs_content)==0:

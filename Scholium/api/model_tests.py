@@ -39,8 +39,6 @@ async def invoke_chat(query:str, thread: str):
 
 async def test_chat():
     thread = "123"
-    # await invoke_chat("Hello", thread)
-    # await invoke_chat("dog",thread)
     response = await invoke_chat("Give me papers on BERT",thread)
     return response
     
@@ -63,7 +61,7 @@ def test_index(query):
 
 if __name__ == "__main__":
 
-    import asyncio  
+    # import asyncio  
     # print(asyncio.run(test_chat()))
     # test_filter_results()
     # draw_graph(RAG)
