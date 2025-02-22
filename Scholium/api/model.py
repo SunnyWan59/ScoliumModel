@@ -39,9 +39,9 @@ model = ChatOpenAI(
 )
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-
+index_name = "arxiv-index"
 pc = Pinecone(api_key= pinecone_api_key)
-index = pc.Index("scholium-index")
+index = pc.Index(index_name)
 vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 
 class ResearchState(MessagesState):
@@ -52,11 +52,17 @@ class ResearchState(MessagesState):
     answer: Optional[str]
     citations: Optional[list[str]]
 
-
 @tool(response_format="content_and_artifact")
 def retrieve(query: str):
     """Retrieve information related to a query."""
-    retrieved_docs = vector_store.similarity_search_with_score(query, k=10)
+    # retrieved_docs = vector_store.similarity_search_with_score(query, k=10)
+    retrieved_docs = index.search_records(
+        namespace="", 
+        query={
+            "inputs": {"text": query}, 
+            "top_k": 3
+        }
+    )
     retrieved_docs = filter_results(retrieved_docs, 0)
     serialized_docs = []
     retrieved_metadata = {}
@@ -95,7 +101,7 @@ class SummaryInput(BaseModel):
 @tool(args_schema=SummaryInput)
 def PaperSummaryTool(summary: str): # pylint: disable=invalid-name,unused-argument
     """
-    Summarize the contents of each paper excerpt from the retrieved context. Make sure that each summary is one paragraph long and 
+    Summarize the contents of each paper from the retrieved context. Make sure that each summary is one paragraph long and 
     includes all relevant information, including the paper title. 
     """
 
@@ -135,12 +141,10 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
         f"{docs_content}"
     )
 
-    prompt = [SystemMessage(system_message_content)]
-
-    # Double texting
-    for message in state["messages"]:
-        if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls):
-            prompt.append(message)
+    prompt = [SystemMessage(system_message_content)] + [
+        message for message in state["messages"]
+        if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls)
+    ]   
     response = await model.bind_tools(
         [PaperSummaryTool],
         tool_choice="PaperSummaryTool"
@@ -148,44 +152,8 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
         prompt,
         config)
     response = response.tool_calls[0]["args"]
+    print(response["metadata"])
     return {"answer": response, "paper_metadata": response["metadata"]}
-
-
-
-def generate(state: MessagesState, config):
-    '''
-    Generates the desired answer to the user's question
-    '''
-    recent_tool_messages = []
-    for message in reversed(state["messages"]):
-        if message.type == "tool":
-            recent_tool_messages.append(message)
-        else:
-            break
-    tool_messages = recent_tool_messages[::-1]
-
-    docs_content = "\n\n".join(doc.content for doc in tool_messages)
-
-    system_message_content = (
-        "You are an assistant for question-answering tasks. Your job is to recommend papers from the retrieved context."
-        "Use the following pieces of retrieved context to answer "
-        "the question. If you don't know the answer, say that you "
-        "don't know. Do not make up sources or use sources that are not in the retrieved context."
-        "Surround the titles of the papers with quotation marks."
-        "\n\n"
-        f"{docs_content}"
-    )
-
-    prompt = [SystemMessage(system_message_content)]
-    for message in state["messages"]:
-        if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls):
-            prompt.append(message)
-    response = model.invoke(prompt)
-    used_papers = extract_paper_titles(response.content)
-    metadata = get_paper_metadata(used_papers, tool_messages[0].artifact)
-    print(response)
-    return {"messages": [response], "answer": response.content, "paper_metadata": metadata}
-
 
 def compile_graph():
     graph_builder = StateGraph(ResearchState)

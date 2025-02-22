@@ -1,4 +1,12 @@
 import re
+import os
+import dotenv
+from openai import OpenAI
+
+dotenv.load_dotenv()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def extract_paper_titles(text):
     """
@@ -33,6 +41,3 @@ def filter_results(response, score_cutoff = 0.8):
         if score >= score_cutoff:
             new_response.append(match[0])
     return new_response
-        
-
-
