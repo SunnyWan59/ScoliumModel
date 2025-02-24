@@ -74,6 +74,14 @@ export function Results() {
               </ul>
             </div>
           )}
+
+          <div>
+            {agentState?.answer?.metadata && (
+              <pre>
+                {JSON.stringify(agentState?.answer?.metadata, null, 2)}
+              </pre>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

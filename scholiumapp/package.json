@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-run": " pip install -r ../Scholium/requirements.txt && python ../Scholium/server.py",
+    "fastapi-run": " pip install -r ../Scholium/requirements.txt && python ../Scholium/api/server.py",
     "next-dev": "next dev",
     "dev": "concurrently \"npm run next-dev\" \" npm run fastapi-run\"",
     "next-start": "next start",

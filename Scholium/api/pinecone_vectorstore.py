@@ -1,6 +1,7 @@
 '''
 My own wrapper for a Pinecone index because the Langchain one only works for documents
 '''
+import ast
 
 class ScholiumPineconeVectorStore():
     """
@@ -35,14 +36,44 @@ class ScholiumPineconeVectorStore():
             response for response in responses if response['score'] >= score_cutoff
         ])
     
+    def _parse_authors(self, author_strings):
+        return [f"{lastname}, {firstname}" 
+           for lastname, firstname, _ in (ast.literal_eval(entry) for entry in author_strings)]
+    
+
     def similarity_search(self, query, top_k = 10):
         embedded_query = self._openAI_embed_query(query)
-        return self.index.query(
+        results = self.index.query(
             namespace="",
             vector=embedded_query,
             top_k = top_k,
             include_metadata = True
         )['matches']
+        for result in results:
+            result['metadata']["authors"] = self._parse_authors(result['metadata']["authors"])
+        return results 
     
     def similarity_search_with_score_cutoff(self, query, top_k, score_cutoff):
         return self._filter_results(self.similarity_search(query, top_k), score_cutoff)
+    
+if __name__ == "__main__":
+    import os
+    from openai import OpenAI
+    from pinecone import Pinecone
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    pinecone_api_key = os.environ.get("PINECONE_API_KEY")
+
+
+    index_name = "arxiv-index"
+    pc = Pinecone(api_key= pinecone_api_key)
+    index = pc.Index(index_name)
+    client = OpenAI(api_key=OPENAI_API_KEY)
+    vector_store = ScholiumPineconeVectorStore(embedding_client= client, index = index)
+
+    print(vector_store._parse_authors((["['Chalkidis', 'Ilias', '']", "['Fergadiotis', 'Manos', '']", "['Malakasiotis', 'Prodromos', '']", "['Aletras', 'Nikolaos', '']", "['Androutsopoulos', 'Ion', '']"])))
+    results = vector_store.similarity_search("Give me papers on BERT and law", 5)
+    print(results)
