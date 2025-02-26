@@ -63,9 +63,9 @@ if __name__ == "__main__":
 
     import asyncio  
     asyncio.run(test_chat())
-    # test_filter_results()
-    # draw_graph(RAG)
+    test_filter_results()
+    draw_graph(RAG)
 
-    # print(test_index("Give me papers on BERT and Law"))
-    # old_response = [paper.metadata["Title"] for paper in vector_store.similarity_search("Give me papers on BERT", k=10)]
-    # print(old_response)
+    print(test_index("Give me papers on BERT and Law"))
+    old_response = [paper.metadata["Title"] for paper in vector_store.similarity_search("Give me papers on BERT", k=10)]
+    print(old_response)
