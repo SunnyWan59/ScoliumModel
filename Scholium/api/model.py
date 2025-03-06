@@ -31,7 +31,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 model = ChatOpenAI(
     model="gpt-4o-mini",
-    temperature=1,
+    temperature=0,
     max_tokens=None,
     timeout=None,
     max_retries=2,
@@ -80,7 +80,7 @@ tools = ToolNode([retrieve])
 class Metadata(BaseModel):
     """Model for a reference"""
     title: str = Field(description="The title of the paper")
-    authors: str = Field(description="The authors of the paper")
+    authors: str = Field(description="The authors of the paper, formatted as 'LastName, FirstName; LastName, FirstName'")
     publish_date: str = Field(description="The publish date of the paper")
 
 class SummaryInput(BaseModel):
@@ -122,7 +122,7 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
     tool_messages = recent_tool_messages[::-1]
 
     docs_content = "\n\n".join(doc.content for doc in tool_messages)
-
+    metadata = [doc.content for doc in tool_messages]
 
     # Dealing with an out of context question
     if len(docs_content)==0:
@@ -141,6 +141,7 @@ async def generate_summary_node(state: ResearchState, config: RunnableConfig):
         message for message in state["messages"]
         if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls)
     ]   
+
     response = await model.bind_tools(
         [PaperSummaryTool],
         tool_choice="PaperSummaryTool"

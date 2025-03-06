@@ -11,16 +11,63 @@ function formatMetadata(rawMetadataList: any[]): CitationData[] {
     // Extract and format authors
     const authors: Author[] = [];
     if (rawMetadata.authors) {
-      // Split author string by commas and process each author
-      rawMetadata.authors.split(',').forEach(authorString => {
-        const nameParts = authorString.trim().split(' ');
-        if (nameParts.length >= 2) {
-          authors.push({
-            firstName: nameParts.slice(0, -1).join(' '), // Everything except last name
-            lastName: nameParts[nameParts.length - 1]    // Last name
-          });
-        }
-      });
+      // Parse author string into individual authors
+      const authorString = rawMetadata.authors;
+      
+      // Handle different formats of author strings
+      if (typeof authorString === 'string') {
+        // Split by semicolons for format like "Vaswani, Ashish; Shankar, Noam; ..."
+        const authorList = authorString.split(';').map(author => author.trim());
+        
+        authorList.forEach(author => {
+          if (author) {
+            // Handle "et al." case
+            if (author.toLowerCase().includes('et al')) {
+              // Skip "et al." as it's not a specific author
+              return;
+            }
+            
+            // Parse "LastName, FirstName" format
+            const parts = author.split(',').map(part => part.trim());
+            if (parts.length >= 2) {
+              authors.push({
+                lastName: parts[0],
+                firstName: parts[1]
+              });
+            } else {
+              // Handle cases where there's no comma (just use as lastName)
+              authors.push({
+                lastName: author,
+                firstName: ''
+              });
+            }
+          }
+        });
+      } else if (Array.isArray(authorString)) {
+        // Handle case where authors might already be an array
+        authorString.forEach(author => {
+          if (typeof author === 'string') {
+            const parts = author.split(',').map(part => part.trim());
+            if (parts.length >= 2) {
+              authors.push({
+                lastName: parts[0],
+                firstName: parts[1]
+              });
+            } else {
+              authors.push({
+                lastName: author,
+                firstName: ''
+              });
+            }
+          } else if (typeof author === 'object' && author !== null) {
+            // Handle case where author might be an object with name properties
+            authors.push({
+              lastName: author.lastName || author.last_name || '',
+              firstName: author.firstName || author.first_name || ''
+            });
+          }
+        });
+      }
     }
 
     // Extract other citation fields with fallbacks

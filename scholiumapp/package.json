@@ -6,7 +6,7 @@
     "fastapi-run": " pip install -r ../Scholium/requirements.txt && python ../Scholium/api/server.py",
     "fastapi-dev": "pip install -r ../Scholium/requirements.txt && cd ../Scholium/api/ && uvicorn server:app --reload --log-level debug",
     "next-dev": "next dev",
-    "dev": "concurrently \"npm run next-dev\" \" npm run fastapi-run\"",
+    "dev": "npm run next-dev",
     "next-start": "next start",
     "build": "next build ",
     "start": "concurrently \"npm run next-start\" \" npm run fastapi-run\"",
