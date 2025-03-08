@@ -8,6 +8,8 @@ import { ResearchState} from "../lib/agent-state";
 import SelectCitation from "./ui/select"
 import { useStyleContext } from "../lib/citation-context";
 import CopyToClipboard from "./ui/copy-button";
+import HomeButton from "./ui/home_button";
+
 
 export function Results() {
   const { researchQuery } = useChatContext();
@@ -22,12 +24,14 @@ export function Results() {
       exit={{ opacity: 0, y: -50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="max-w-[1000px] p-8 lg:p-4 flex flex-col gap-y-8 mt-4 lg:mt-6 text-sm lg:text-base">
-        <div className="space-y-4">
+      <div className="max-w-[1000px] p-8 lg:p-5 flex flex-col gap-y-8 mt-4 lg:mt-6 text-sm lg:text-base">
+
+        <div className="flex items-center gap-20">
           <h1 className="text-3xl lg:text-4xl font-extralight">
             {researchQuery}
           </h1>
         </div>
+
         {/* 
         Results from the model 
         */}
@@ -42,10 +46,10 @@ export function Results() {
                 </pre> */}
             </div>
           </div>
-
         {/* 
         Citations
         */}
+        
           {agentState?.answer?.metadata?.length && (
             <div className="flex col-span-12 lg:col-span-4 flex-col gap-y-4 w-[200px]">
               <h2 className="flex items-center gap-x-2">
